@@ -1,4 +1,0 @@
--------------------------------------------------------------------------------
-Test set: com.myapps.tradezone.TradeZoneApplicationTests
--------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 9.639 sec - in com.myapps.tradezone.TradeZoneApplicationTests
