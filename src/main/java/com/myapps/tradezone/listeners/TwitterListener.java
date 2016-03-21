@@ -78,6 +78,7 @@ public class TwitterListener {
 
 	    @Override
 		public void onStatus(Status status) {
+	    	if (status.getUser().getId() == 4170993693L && status.getText().contains("Activity expiring on")) {
 	    	try {
 			String date = DateFormat.getDateTimeInstance().format(new Date());
 			Tweet tweet = new Tweet(
@@ -95,6 +96,7 @@ public class TwitterListener {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+	    	}
 		}
 
 		@Override
