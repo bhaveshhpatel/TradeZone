@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -jar  target/TradeZone-0.0.1-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -jar  target/tradezone-0.0.1-SNAPSHOT.jar
