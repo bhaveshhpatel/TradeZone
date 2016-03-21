@@ -18,15 +18,10 @@ import com.myapps.tradezone.listeners.*;
  * @author Bhavesh Patel
  */
 @SpringBootApplication
-public class TradeZoneApplication extends SpringBootServletInitializer {
+public class TradeZoneApplication {
 	
 private static final String JMS_BROKER_URL = "vm://embedded?broker.persistent=false,useShutdownHook=false";
     
-@Override
-protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-    return application.sources(TradeZoneApplication.class);
-}
-
 @Bean
     public ConnectionFactory connectionFactory() {
         return new ActiveMQConnectionFactory(JMS_BROKER_URL);
