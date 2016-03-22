@@ -87,7 +87,6 @@
 				<ul class="equity">
 					<!-- SOCIAL (MIDDLE-CONTAINER) -->
 					<li><h2 class="titular">Information</h2></li>
-					<li>Symbol:</li>
 				</ul>
 			</div>
 		</div>
