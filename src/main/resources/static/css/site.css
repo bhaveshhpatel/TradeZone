@@ -80,6 +80,11 @@ h2 {
 	font-size: 38px;
 }
 
+.app-title-container img {
+	width:100%;
+	height:95px;
+}
+
 p {
 	font-size: 15px;
 }
@@ -257,7 +262,6 @@ h1, h2, p, a, span{
 .main-container {
 	font-family: 'Ubuntu', sans-serif;
 	width: 95%;
-	height: 1725px;
 	margin: 2em auto;
 }	
 	/*********************************************** HEADER ***********************************************/
@@ -341,7 +345,7 @@ h1, h2, p, a, span{
 		/******************************************** LEFT CONTAINER *****************************************/
 		.left-container {}
 			.menu-box {
-				height: 560px;
+				height: 475px;
 			}
 				.menu-box .titular {
 					background: #e64c65;
@@ -976,7 +980,7 @@ h1, h2, p, a, span{
 		/********************************************* RIGHT CONTAINER ****************************************/
 		.right-container {}
 			.trade-alerts {
-				height: 560px;
+				height: 475px;
 			}
 				.trade-alerts .titular {
 					background: #fcb150;
@@ -1120,3 +1124,18 @@ h1, h2, p, a, span{
 						background: #e64c65;
 						border-radius: 100%;
 					}
+.lower-container {
+		    width:100%;
+		    height:100%;
+		    padding-left:15px;
+		    padding-right:15px;
+		}
+		.tradeTable {
+		    width:100%;
+		    padding-left:15px;
+		    padding-right:15px;	
+		    color: #FFFFFF;
+		    margin-top:20px;
+		}
+		.tradeTable tr:nth-child(even) {background-color: #659a75; text-align:center;}
+		.tradeTable tr:nth-child(odd) {background-color: #d33d2c; text-align:center;}

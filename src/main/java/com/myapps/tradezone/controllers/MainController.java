@@ -19,10 +19,14 @@ public class MainController {
 	@Autowired
 	private TweetRepository repository;
 	
+	@Autowired
+	private TradeRepository tradeRepository;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelMap model = new ModelMap();
 		model.addAttribute("tweets", repository.findAll());
+		model.addAttribute("trades", tradeRepository.findAll());
 		return new ModelAndView("index", model);
     }
 }

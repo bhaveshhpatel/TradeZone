@@ -52,6 +52,12 @@
 								+ "</p></li>");
 						//messageList = $("#twitter_tweets div:first");
 					});
+					stompClient.subscribe("/t/trade", function(data) {
+						var trade = jQuery.parseJSON(data.body);
+						$("#tradesTable tr:first").after("<tr><td>" + trade.symbol + "</td><td>" + trade.equityName + "</td><td>" + trade.expiration + "</td><td>"
+								+ trade.strike + "</td><td>" + trade.option + "</td><td>" + trade.action + "</td><td>" + trade.volume + "</td><td>"
+								+ trade.avgDailyOptionsVol + "</td><td>" + trade.multipleOfDailyOptionsVol + "</td></tr>");
+					});
 				});
 			});
 </script>
@@ -59,7 +65,7 @@
 
 <body>
 	<div class="app-title-container">
-		<h2 class="titular">TradeZone</h2>
+	<img src="<c:url value="/images/TradeZoneBanner.jpg" />"></img>
 	</div>
 	<div class="main-container">
 
@@ -122,6 +128,40 @@
 		<!-- end right-container -->
 	</div>
 	<!-- end main-container -->
+	<div class="lower-container container">
+			<div class="tweets block">
+				<!-- TWEETS (MIDDLE-CONTAINER) -->
+				<h2 class="titular">
+					<span class="icon zocial-stumbleupon"></span>Trade Analyzer
+				</h2>
+				<table class="tradeTable" id="tradesTable">
+				<tr class="tradeTableHeader">
+				<th> Symbol</th>
+				<th> Equity Name</th>
+				<th> Expiration</th>
+				<th> Strike</th>
+				<th> Option</th>
+				<th> Action</th>
+				<th> Volume</th>
+				<th> Avg Daily Vol</th>
+				<th> Multiple of Daily Vol</th>
+				</tr>
+				<c:forEach var="trade" items="${trades}">
+					<tr>
+					<td><c:out value="${trade.symbol}"/></td>
+					<td><c:out value="${trade.equityName}"/></td>
+					<td><c:out value="${trade.expiration}"/></td>
+					<td><c:out value="${trade.strike}"/></td>
+					<td><c:out value="${trade.option}"/></td>
+					<td><c:out value="${trade.action}"/></td>
+					<td><c:out value="${trade.volume}"/></td>
+					<td><c:out value="${trade.avgDailyOptionsVol}"/></td>
+					<td><c:out value="${trade.multipleOfDailyOptionsVol}"/></td>
+                    </tr>
+                    </c:forEach>
+				</table>
+			</div>
+		</div>
 </body>
 
 </html>
