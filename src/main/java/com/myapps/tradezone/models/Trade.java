@@ -1,6 +1,10 @@
 package com.myapps.tradezone.models;
 
+import org.springframework.data.annotation.Id;
+
 public class Trade {
+	@Id
+	private String id;
 	private String symbol;
 	private String equityName;
 	private String expiration;

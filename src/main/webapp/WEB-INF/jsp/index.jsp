@@ -136,15 +136,15 @@
 				</h2>
 				<table class="tradeTable" id="tradesTable">
 				<tr class="tradeTableHeader">
-				<th> Symbol</th>
-				<th> Equity Name</th>
-				<th> Expiration</th>
-				<th> Strike</th>
-				<th> Option</th>
-				<th> Action</th>
-				<th> Volume</th>
-				<th> Avg Daily Vol</th>
-				<th> Multiple of Daily Vol</th>
+				<th> SYMBOL</th>
+				<th> EQUITY NAME</th>
+				<th> EXPIRATION</th>
+				<th> STRIKE</th>
+				<th> OPTION</th>
+				<th> ACTION</th>
+				<th> VOLUME</th>
+				<th> AVG DAILY OPTIONS VOL</th>
+				<th> MULTIPLE OF DAILY OPTIONS VOL</th>
 				</tr>
 				<c:forEach var="trade" items="${trades}">
 					<tr>

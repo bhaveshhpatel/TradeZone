@@ -1136,6 +1136,7 @@ h1, h2, p, a, span{
 		    padding-right:15px;	
 		    color: #FFFFFF;
 		    margin-top:20px;
+		    border-style:none;
 		}
 		.tradeTable tr:nth-child(even) {background-color: #659a75; text-align:center;}
 		.tradeTable tr:nth-child(odd) {background-color: #d33d2c; text-align:center;}

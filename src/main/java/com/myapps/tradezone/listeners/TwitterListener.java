@@ -15,6 +15,9 @@ import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.ModelAndView;
 
 import twitter4j.*;
 import twitter4j.conf.*;
@@ -107,6 +110,7 @@ public class TwitterListener {
 		String tradeAsJson = mapper.writeValueAsString(trade);
 		System.out.println(trade.toString());
 		jmsTemplate.convertAndSend(TRADE_QUEUE, tradeAsJson);
+		//getEquityData(symbol);
 		tradeRepository.save(trade);
     	} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -117,6 +121,16 @@ public class TwitterListener {
 		}
 	}
    
+	public void getEquityData(String symbol) {
+		RestTemplate restTemplate = new RestTemplate();
+		String url = "http://query.yahooapis.com/v1/public/yql?q=select%20"
+				+ "symbol,AverageDailyVolume%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22"
+				+ symbol + "%22)&format=json&env=http://datatables.org/alltables.env";
+		System.out.println("URL: " + url);
+		//Equity equities = restTemplate.getForObject(url, Equity.class);
+		//System.out.println("Equities for " + equities.getSymbol() + " Avg Daily Vol: " + equities.getAverageDailyVolume());
+    }
+	
 	public void initConfiguration(){
         ConfigurationBuilder cb = new ConfigurationBuilder();
         cb.setDebugEnabled(true);
