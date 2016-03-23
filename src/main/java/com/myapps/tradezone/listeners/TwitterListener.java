@@ -2,9 +2,12 @@ package com.myapps.tradezone.listeners;
 
 import java.io.IOException;
 
+
 import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,7 +69,7 @@ public class TwitterListener {
 
    public static final String COLLECTION_NAME_2 = "Equity_Options_Volume_2";
 
-	public void equityOptionsData(String tweet) {
+	public void equityOptionsData(String tweet, String date) {
 		String[] tweetSplitString = tweet.split(" ");
 		int avgDailyVol = 0;
 		int count = 0;
@@ -92,6 +95,7 @@ public class TwitterListener {
 			count++;
 		}
 		Trade trade = new Trade();
+		trade.setDate(date);
 		trade.setSymbol(symbol);
 		trade.setEquityName(name);
 		StringBuilder exp = new StringBuilder(tweetSplitString[7]).append(" ")
@@ -151,14 +155,16 @@ public class TwitterListener {
 	    	//if (status.getUser().getId() == 4170993693L && status.getText().contains("Activity expiring on")) {
 	    	if (status.getText().contains("Activity expiring on")) {
 	    	try {
-			String date = DateFormat.getDateTimeInstance().format(new Date());
+	    		SimpleDateFormat format = new SimpleDateFormat("MMM dd, yyyy HH:mm:ss");
+	    		format.setTimeZone(TimeZone.getTimeZone("America/Los_Angeles"));
+			String date = format.format(new Date());
 			Tweet tweet = new Tweet(
 					status.getText(), status.getUser().getScreenName(), date, status.getUser().getId());
 			String tweetAsJson = mapper.writeValueAsString(tweet);
 			System.out.println(tweet.toString());
 			repository.save(tweet);
 			addTweet(tweetAsJson);
-			equityOptionsData(status.getText());
+			equityOptionsData(status.getText(), date);
 			//addTweet(tweet.toString());
 	    	} catch (JsonGenerationException e) {
 				e.printStackTrace();

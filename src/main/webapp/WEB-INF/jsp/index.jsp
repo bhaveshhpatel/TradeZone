@@ -175,6 +175,7 @@
 			<h2 class="titular">
 				<span class="icon zocial-stumbleupon"></span>Trade Analyzer
 			</h2>
+			<div class="scroll mCustomScrollbar">
 			<table class="tradeTable" id="tradesTable">
 				<tr class="tradeTableHeader">
 					<th>SYMBOL</th>
@@ -201,6 +202,7 @@
 					</tr>
 				</c:forEach>
 			</table>
+			</div>
 		</div>
 	</div>
 </body>

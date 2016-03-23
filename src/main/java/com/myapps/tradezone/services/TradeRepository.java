@@ -8,5 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface TradeRepository extends MongoRepository<Trade, String> {
 
     public List<Trade> findBySymbol(String symbol);
+    
+    public List<Trade> findByOrderByDateDesc();
 
 }

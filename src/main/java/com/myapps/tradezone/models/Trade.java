@@ -5,6 +5,7 @@ import org.springframework.data.annotation.Id;
 public class Trade {
 	@Id
 	private String id;
+	private String date;
 	private String symbol;
 	private String equityName;
 	private String expiration;
@@ -14,6 +15,14 @@ public class Trade {
 	private String volume;
 	private int avgDailyOptionsVol;
 	private double multipleOfDailyOptionsVol; 
+	
+	public String getDate() {
+		return this.date;
+	}
+	
+	public void setDate(String date) {
+		this.date = date;
+	}
 	
 	public String getSymbol() {
 		return this.symbol;
@@ -88,7 +97,8 @@ public class Trade {
 	}
 	
 	public String toString() {
-		StringBuilder trade = new StringBuilder("Symbol: ").append(symbol)
+		StringBuilder trade = new StringBuilder("Date: ").append(date)
+				.append("Symbol: ").append(symbol)
 				.append(" Equity Name: ").append(equityName)
 				.append(" Expiration: ").append(expiration)
 				.append(" Strike: ").append(strike)

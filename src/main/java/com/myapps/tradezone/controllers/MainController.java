@@ -26,7 +26,7 @@ public class MainController {
 	public ModelAndView index() {
 		ModelMap model = new ModelMap();
 		model.addAttribute("tweets", repository.findByOrderByDateDesc());
-		model.addAttribute("trades", tradeRepository.findAll());
+		model.addAttribute("trades", tradeRepository.findByOrderByDateDesc());
 		return new ModelAndView("index", model);
     }
 }
