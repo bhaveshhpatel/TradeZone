@@ -114,8 +114,8 @@
 			<div class="menu-box block">
 				<!-- MENU BOX (LEFT-CONTAINER) -->
 				<h2 class="titular">
-					<span class="icon zocial-pinboard"></span>&nbsp;&nbsp;&nbsp;Equity
-					Options Information
+					<span class="icon zocial-pinboard"></span>&nbsp;&nbsp;&nbsp;EQUITY
+					OPTIONS INFORMATION
 				</h2>
 				<br>
 				<div class="input-container">
@@ -126,7 +126,7 @@
 				</div>
 				<ul class="equity">
 					<!-- SOCIAL (MIDDLE-CONTAINER) -->
-					<li><h2 class="titular">Information</h2></li>
+					<li><h2 class="titular">DETAILS</h2></li>
 				</ul>
 			</div>
 		</div>
@@ -160,8 +160,8 @@
 			<div class="trade-alerts block">
 				<!-- MENU BOX (LEFT-CONTAINER) -->
 				<h2 class="titular">
-					<span class="icon zocial-podcast"></span>&nbsp;&nbsp;&nbsp;Trade
-					Alerts
+					<span class="icon zocial-podcast"></span>&nbsp;&nbsp;&nbsp;TRADE
+					ALERTS
 				</h2>
 				<br>
 			</div>
@@ -173,7 +173,7 @@
 		<div class="tweets block">
 			<!-- TWEETS (MIDDLE-CONTAINER) -->
 			<h2 class="titular">
-				<span class="icon zocial-stumbleupon"></span>Trade Analyzer
+				<span class="icon zocial-stumbleupon"></span>TRADE ANALYZER
 			</h2>
 			<div class="scroll mCustomScrollbar">
 			<table class="tradeTable" id="tradesTable">
