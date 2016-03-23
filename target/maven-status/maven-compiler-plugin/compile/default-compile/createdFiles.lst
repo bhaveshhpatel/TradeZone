@@ -1,10 +1,14 @@
 com\myapps\tradezone\TradeZoneApplication.class
+com\myapps\tradezone\models\EquityData.class
+com\myapps\tradezone\models\Trade.class
 com\myapps\tradezone\controllers\EquityController.class
 com\myapps\tradezone\listeners\TwitterListener$1.class
 com\myapps\tradezone\controllers\MainController.class
 com\myapps\tradezone\models\EquityOptions.class
+com\myapps\tradezone\models\Equity.class
 com\myapps\tradezone\listeners\TwitterListener.class
 com\myapps\tradezone\services\TweetRepository.class
+com\myapps\tradezone\services\TradeRepository.class
 com\myapps\tradezone\services\Twitter.class
 com\myapps\tradezone\config\WebSocketConfig.class
 com\myapps\tradezone\models\Tweet.class

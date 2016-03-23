@@ -17,7 +17,8 @@
 	href="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/jquery.mCustomScrollbar.min.css">
 <link rel="stylesheet" media="screen"
 	href="https://raw.githubusercontent.com/malihu/malihu-custom-scrollbar-plugin/master/jquery.mCustomScrollbar.css">
-<link rel="shortcut icon" type="image/png" href="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/mCSB_buttons.png">
+<link rel="shortcut icon" type="image/png"
+	href="//cdn.jsdelivr.net/jquery.mcustomscrollbar/3.0.6/mCSB_buttons.png">
 <script type="text/javascript"
 	src="//cdn.jsdelivr.net/jquery/1.11.2/jquery.min.js"></script>
 <script type="text/javascript"
@@ -32,40 +33,79 @@
 	src="https://raw.githubusercontent.com/malihu/malihu-custom-scrollbar-plugin/master/jquery.mCustomScrollbar.js"></script>
 
 <script type="text/javascript">
-	$(document).ready(
-			function() {
-				//var messageList = $('#twitter_tweets li:eq(0)');
+	$(document)
+			.ready(
+					function() {
+						//var messageList = $('#twitter_tweets li:eq(0)');
 
-				// defined a connection to a new socket endpoint
-				var socket = new SockJS('/stomp');
+						// defined a connection to a new socket endpoint
+						var socket = new SockJS('/stomp');
 
-				var stompClient = Stomp.over(socket);
+						var stompClient = Stomp.over(socket);
 
-				stompClient.connect({}, function(frame) {
-					// subscribe to the /twitter endpoint
-					stompClient.subscribe("/t/twitter", function(data) {
-						var message = jQuery.parseJSON(data.body);
-						//$("<div class=\"tweet first\"><p>" + message + "</p></div>").insertBefore( ".first" );
-						$('#twitter_tweets li:eq(0)').before("<li class=\"tweet\"><p>"
-								+ message.tweetMsg + "</p><p>"
-								+ "<span class=\"time-ago scnd-font-color\">- @" + message.userName +" (" + message.date + ")</span>"
-								+ "</p></li>");
-						//messageList = $("#twitter_tweets div:first");
+						stompClient
+								.connect(
+										{},
+										function(frame) {
+											// subscribe to the /twitter endpoint
+											stompClient
+													.subscribe(
+															"/t/twitter",
+															function(data) {
+																var message = jQuery
+																		.parseJSON(data.body);
+																//$("<div class=\"tweet first\"><p>" + message + "</p></div>").insertBefore( ".first" );
+																$(
+																		'#twitter_tweets li:eq(0)')
+																		.before(
+																				"<li class=\"tweet\"><p>"
+																						+ message.tweetMsg
+																						+ "</p><p>"
+																						+ "<span class=\"time-ago scnd-font-color\">- @"
+																						+ message.userName
+																						+ " ("
+																						+ message.date
+																						+ ")</span>"
+																						+ "</p></li>");
+																//messageList = $("#twitter_tweets div:first");
+															});
+											stompClient
+													.subscribe(
+															"/t/trade",
+															function(data) {
+																var trade = jQuery
+																		.parseJSON(data.body);
+																$(
+																		"#tradesTable tr:first")
+																		.after(
+																				"<tr><td>"
+																						+ trade.symbol
+																						+ "</td><td>"
+																						+ trade.equityName
+																						+ "</td><td>"
+																						+ trade.expiration
+																						+ "</td><td>"
+																						+ trade.strike
+																						+ "</td><td>"
+																						+ trade.option
+																						+ "</td><td>"
+																						+ trade.action
+																						+ "</td><td>"
+																						+ trade.volume
+																						+ "</td><td>"
+																						+ trade.avgDailyOptionsVol
+																						+ "</td><td>"
+																						+ trade.multipleOfDailyOptionsVol
+																						+ "</td></tr>");
+															});
+										});
 					});
-					stompClient.subscribe("/t/trade", function(data) {
-						var trade = jQuery.parseJSON(data.body);
-						$("#tradesTable tr:first").after("<tr><td>" + trade.symbol + "</td><td>" + trade.equityName + "</td><td>" + trade.expiration + "</td><td>"
-								+ trade.strike + "</td><td>" + trade.option + "</td><td>" + trade.action + "</td><td>" + trade.volume + "</td><td>"
-								+ trade.avgDailyOptionsVol + "</td><td>" + trade.multipleOfDailyOptionsVol + "</td></tr>");
-					});
-				});
-			});
 </script>
 </head>
 
 <body>
 	<div class="app-title-container">
-	<img src="<c:url value="/images/TradeZoneBanner.jpg" />"></img>
+		<img src="<c:url value="/images/TradeZoneBanner.jpg" />"></img>
 	</div>
 	<div class="main-container">
 
@@ -99,16 +139,18 @@
 					<span class="icon zocial-twitter"></span>LATEST UOA TWEETS
 				</h2>
 				<ul class="scroll mCustomScrollbar" id="twitter_tweets">
-				<c:forEach var="t" items="${tweets}">
-					<li class="tweet">
-						<p>
-							<c:out value="${t.tweetMsg}"/>
-						</p>
-						<p>
-							<span class="time-ago scnd-font-color">- @<c:out value="${t.userName}"/> (<c:out value="${t.date}"/>)</span>
-						</p>
-					</li>
-				</c:forEach>
+					<c:forEach var="t" items="${tweets}">
+						<li class="tweet">
+							<p>
+								<c:out value="${t.tweetMsg}" />
+							</p>
+							<p>
+								<span class="time-ago scnd-font-color">- @<c:out
+										value="${t.userName}" /> (<c:out value="${t.date}" />)
+								</span>
+							</p>
+						</li>
+					</c:forEach>
 				</ul>
 			</div>
 		</div>
@@ -128,39 +170,39 @@
 	</div>
 	<!-- end main-container -->
 	<div class="lower-container container">
-			<div class="tweets block">
-				<!-- TWEETS (MIDDLE-CONTAINER) -->
-				<h2 class="titular">
-					<span class="icon zocial-stumbleupon"></span>Trade Analyzer
-				</h2>
-				<table class="tradeTable" id="tradesTable">
+		<div class="tweets block">
+			<!-- TWEETS (MIDDLE-CONTAINER) -->
+			<h2 class="titular">
+				<span class="icon zocial-stumbleupon"></span>Trade Analyzer
+			</h2>
+			<table class="tradeTable" id="tradesTable">
 				<tr class="tradeTableHeader">
-				<th> SYMBOL</th>
-				<th> EQUITY NAME</th>
-				<th> EXPIRATION</th>
-				<th> STRIKE</th>
-				<th> OPTION</th>
-				<th> ACTION</th>
-				<th> VOLUME</th>
-				<th> AVG DAILY OPTIONS VOL</th>
-				<th> MULTIPLE OF DAILY OPTIONS VOL</th>
+					<th>SYMBOL</th>
+					<th>EQUITY NAME</th>
+					<th>EXPIRATION</th>
+					<th>STRIKE</th>
+					<th>OPTION</th>
+					<th>ACTION</th>
+					<th>VOLUME</th>
+					<th>AVG DAILY OPTIONS VOL</th>
+					<th>MULTIPLE OF DAILY OPTIONS VOL</th>
 				</tr>
 				<c:forEach var="trade" items="${trades}">
 					<tr>
-					<td><c:out value="${trade.symbol}"/></td>
-					<td><c:out value="${trade.equityName}"/></td>
-					<td><c:out value="${trade.expiration}"/></td>
-					<td><c:out value="${trade.strike}"/></td>
-					<td><c:out value="${trade.option}"/></td>
-					<td><c:out value="${trade.action}"/></td>
-					<td><c:out value="${trade.volume}"/></td>
-					<td><c:out value="${trade.avgDailyOptionsVol}"/></td>
-					<td><c:out value="${trade.multipleOfDailyOptionsVol}"/></td>
-                    </tr>
-                    </c:forEach>
-				</table>
-			</div>
+						<td><c:out value="${trade.symbol}" /></td>
+						<td><c:out value="${trade.equityName}" /></td>
+						<td><c:out value="${trade.expiration}" /></td>
+						<td><c:out value="${trade.strike}" /></td>
+						<td><c:out value="${trade.option}" /></td>
+						<td><c:out value="${trade.action}" /></td>
+						<td><c:out value="${trade.volume}" /></td>
+						<td><c:out value="${trade.avgDailyOptionsVol}" /></td>
+						<td><c:out value="${trade.multipleOfDailyOptionsVol}" /></td>
+					</tr>
+				</c:forEach>
+			</table>
 		</div>
+	</div>
 </body>
 
 </html>

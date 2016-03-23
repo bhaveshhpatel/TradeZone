@@ -59,7 +59,7 @@
 }
 
 body {
-	background: #1f253d;
+	background: #ffffff;
 }
 
 ul {
@@ -78,11 +78,6 @@ h2 {
 
 .app-title-container h2 {
 	font-size: 38px;
-}
-
-.app-title-container img {
-	width:100%;
-	height:95px;
 }
 
 p {
@@ -255,6 +250,8 @@ h1, h2, p, a, span{
 	width: 100%;
 	height: 100%;
 	align: center;
+	margin-bottom:0;
+	padding-bottom:0;
 }
 .app-title-container .titular {
 					background: #11a8ab;
@@ -263,6 +260,8 @@ h1, h2, p, a, span{
 	font-family: 'Ubuntu', sans-serif;
 	width: 95%;
 	margin: 2em auto;
+	margin-top:0;
+	padding-top:0;
 }	
 	/*********************************************** HEADER ***********************************************/
 	header {
@@ -349,6 +348,8 @@ h1, h2, p, a, span{
 			}
 				.menu-box .titular {
 					background: #e64c65;
+					height:40px;
+					line-height:35px;
 				}
 				.menu-box-menu .icon {
 					display: inline-block;
@@ -890,6 +891,8 @@ h1, h2, p, a, span{
 
 .tweets .titular {
 					background: #35aadc;
+					height:40px;
+					line-height:38px;
 				}
 					.tweets .titular .icon {
 						font-size: 18px;
@@ -984,6 +987,8 @@ h1, h2, p, a, span{
 			}
 				.trade-alerts .titular {
 					background: #fcb150;
+					height:40px;
+					line-height:38px;
 				}
 			.join-newsletter {
 				height: 230px;
@@ -1127,8 +1132,8 @@ h1, h2, p, a, span{
 .lower-container {
 		    width:100%;
 		    height:100%;
-		    padding-left:15px;
-		    padding-right:15px;
+		    padding-left:40px;
+		    padding-right:45px;
 		}
 		.tradeTable {
 		    width:100%;
@@ -1136,7 +1141,6 @@ h1, h2, p, a, span{
 		    padding-right:15px;	
 		    color: #FFFFFF;
 		    margin-top:20px;
-		    border-style:none;
 		}
 		.tradeTable tr:nth-child(even) {background-color: #659a75; text-align:center;}
 		.tradeTable tr:nth-child(odd) {background-color: #d33d2c; text-align:center;}

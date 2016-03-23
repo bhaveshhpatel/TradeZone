@@ -25,7 +25,7 @@ public class MainController {
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView index() {
 		ModelMap model = new ModelMap();
-		model.addAttribute("tweets", repository.findAll());
+		model.addAttribute("tweets", repository.findByOrderByDateDesc());
 		model.addAttribute("trades", tradeRepository.findAll());
 		return new ModelAndView("index", model);
     }

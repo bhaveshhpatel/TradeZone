@@ -8,5 +8,7 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 public interface TweetRepository extends MongoRepository<Tweet, String> {
 
     public List<Tweet> findByUserName(String userName);
+    
+    public List<Tweet> findByOrderByDateDesc();
 
 }

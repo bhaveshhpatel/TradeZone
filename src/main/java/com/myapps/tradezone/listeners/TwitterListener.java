@@ -127,7 +127,7 @@ public class TwitterListener {
 				+ "symbol,AverageDailyVolume%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22"
 				+ symbol + "%22)&format=json&env=http://datatables.org/alltables.env";
 		System.out.println("URL: " + url);
-		//Equity equities = restTemplate.getForObject(url, Equity.class);
+		EquityData equitieData = restTemplate.getForObject(url, EquityData.class);
 		//System.out.println("Equities for " + equities.getSymbol() + " Avg Daily Vol: " + equities.getAverageDailyVolume());
     }
 	
