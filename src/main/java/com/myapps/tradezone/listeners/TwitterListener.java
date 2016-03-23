@@ -107,7 +107,7 @@ public class TwitterListener {
 		trade.setVolume(tweetSplitString[10]);
 		int adv = avgDailyVol / count;
 		double multiple = (double) Integer.parseInt(tweetSplitString[10].replace(",", "")) / adv;
-		multiple = Math.round(multiple * 100000d) / 100000d;
+		multiple = Math.round(multiple * 100d) / 100d;
 		trade.setAvgDailyOptionsVol(adv);
 		trade.setMultipleOfDailyOptionsVol(multiple);
 		System.out.println("Trade info: " + trade.toString());
