@@ -3,8 +3,10 @@ package com.myapps.tradezone.listeners;
 import java.io.IOException;
 
 
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -16,6 +18,11 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.http.MediaType;
+import org.springframework.http.client.ClientHttpRequestFactory;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
+import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -128,6 +135,19 @@ public class TwitterListener {
    
 	public void getEquityData(String symbol) {
 		RestTemplate restTemplate = new RestTemplate();
+		  restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
+		  List<HttpMessageConverter<?>> messageConverterList = restTemplate.getMessageConverters();
+		   
+		  // Set HTTP Message converter using a JSON implementation.
+		  MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
+		   
+		  // Add supported media type returned by BI API.
+		  List<MediaType> supportedMediaTypes = new ArrayList<MediaType>();
+		  supportedMediaTypes.add(new MediaType("text", "plain"));
+		  supportedMediaTypes.add(new MediaType("application", "json"));
+		  jsonMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
+		  messageConverterList.add(jsonMessageConverter);
+		  restTemplate.setMessageConverters(messageConverterList);
 		String url = "http://query.yahooapis.com/v1/public/yql?q=select%20"
 				+ "symbol,AverageDailyVolume%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22"
 				+ symbol + "%22)&format=json&env=http://datatables.org/alltables.env";
