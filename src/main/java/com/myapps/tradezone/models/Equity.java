@@ -1,5 +1,8 @@
 package com.myapps.tradezone.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Equity {
 	private String symbol;
 	private String AverageDailyVolume;

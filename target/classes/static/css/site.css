@@ -334,7 +334,7 @@ h1, h2, p, a, span{
 	/** CONTAINERS **/
 	.container {
 		float: left;
-		width: 300px;
+		width: 409px;
 	}
 		.block {
 			margin-bottom: 25px;
@@ -752,7 +752,7 @@ h1, h2, p, a, span{
 					}
 		/************************************************** MIDDLE CONTAINER **********************************/
 		.middle-container {
-		    width:830px;
+		    width:620px;
 			margin: 0 25px;			
 		}
 			.profile {

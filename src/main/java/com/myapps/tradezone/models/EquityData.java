@@ -2,6 +2,9 @@ package com.myapps.tradezone.models;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class EquityData {
 	private String count;
 	private String created;

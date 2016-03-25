@@ -1,9 +1,6 @@
 package com.myapps.tradezone.listeners;
 
 import java.io.IOException;
-
-
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -123,6 +120,7 @@ public class TwitterListener {
 		System.out.println(trade.toString());
 		jmsTemplate.convertAndSend(TRADE_QUEUE, tradeAsJson);
 		//getEquityData(symbol);
+		retrieve(symbol);
 		tradeRepository.save(trade);
     	} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -132,27 +130,30 @@ public class TwitterListener {
 			e.printStackTrace();
 		}
 	}
+	
+	public void retrieve(String requestedSymbol) {
+		RestTemplate rTemplate = new RestTemplate();
+	    rTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+	    String env = "http://datatables.org/alltables.env";
+	  String symbolString = "%28%22" + requestedSymbol + "%22%29";
+	  String fmt="json";
+	  String queryStr = "select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20";
+	  String restJsonUrl = "http://query.yahooapis.com/v1/public/yql?q="
+		  + queryStr + symbolString + "&format=" + fmt + "&env=" + env;
+	  restJsonUrl = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22YHOO%22)&format=json&env=http://datatables.org/alltables.env";
+	  System.out.println("URL: " + restJsonUrl);
+	  Wrapper response =rTemplate.getForObject(restJsonUrl, Wrapper.class);
+	}
    
 	public void getEquityData(String symbol) {
-		RestTemplate restTemplate = new RestTemplate();
-		  restTemplate.setRequestFactory(new HttpComponentsClientHttpRequestFactory());
-		  List<HttpMessageConverter<?>> messageConverterList = restTemplate.getMessageConverters();
-		   
-		  // Set HTTP Message converter using a JSON implementation.
-		  MappingJackson2HttpMessageConverter jsonMessageConverter = new MappingJackson2HttpMessageConverter();
-		   
-		  // Add supported media type returned by BI API.
-		  List<MediaType> supportedMediaTypes = new ArrayList<MediaType>();
-		  supportedMediaTypes.add(new MediaType("text", "plain"));
-		  supportedMediaTypes.add(new MediaType("application", "json"));
-		  jsonMessageConverter.setSupportedMediaTypes(supportedMediaTypes);
-		  messageConverterList.add(jsonMessageConverter);
-		  restTemplate.setMessageConverters(messageConverterList);
 		String url = "http://query.yahooapis.com/v1/public/yql?q=select%20"
-				+ "symbol,AverageDailyVolume%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22"
-				+ symbol + "%22)&format=json&env=http://datatables.org/alltables.env";
+				+ "symbol,AverageDailyVolume%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(\""
+				+ symbol + "\")&format=json&env=http://datatables.org/alltables.env";
+				//String url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22YHOO%22)&format=json&env=http://datatables.org/alltables.env";
 		System.out.println("URL: " + url);
-		EquityData equitieData = restTemplate.getForObject(url, EquityData.class);
+		RestTemplate restTemplate = new RestTemplate();
+	    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+	    Query query = restTemplate.getForObject(url, Query.class);
 		//System.out.println("Equities for " + equities.getSymbol() + " Avg Daily Vol: " + equities.getAverageDailyVolume());
     }
 	
