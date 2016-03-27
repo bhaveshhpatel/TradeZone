@@ -96,6 +96,10 @@
 																						+ trade.avgDailyOptionsVol
 																						+ "</td><td>"
 																						+ trade.multipleOfDailyOptionsVol
+																						+ "</td><td>"
+																						+ trade.avgDailyStockVol
+																						+ "</td><td>"
+																						+ trade.percentOfStockVol
 																						+ "</td></tr>");
 															});
 										});
@@ -187,6 +191,8 @@
 					<th>VOLUME</th>
 					<th>AVG DAILY OPTIONS VOL</th>
 					<th>MULTIPLE OF DAILY OPTIONS VOL</th>
+					<th>AVG DAILY STOCK VOL</th>
+					<th>PERCENT OF DAILY STOCK VOL</th>
 				</tr>
 				<c:forEach var="trade" items="${trades}">
 					<tr>
@@ -199,6 +205,8 @@
 						<td><c:out value="${trade.volume}" /></td>
 						<td><c:out value="${trade.avgDailyOptionsVol}" /></td>
 						<td><c:out value="${trade.multipleOfDailyOptionsVol}" /></td>
+						<td><c:out value="${trade.avgDailyStockVol}" /></td>
+						<td><c:out value="${trade.percentOfStockVol}" /></td>
 					</tr>
 				</c:forEach>
 			</table>

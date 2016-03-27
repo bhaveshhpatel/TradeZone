@@ -14,7 +14,9 @@ public class Trade {
 	private String action;
 	private String volume;
 	private int avgDailyOptionsVol;
-	private double multipleOfDailyOptionsVol; 
+	private double multipleOfDailyOptionsVol;
+	private int avgDailyStockVol;
+	private double percentOfStockVol;
 	
 	public String getDate() {
 		return this.date;
@@ -96,6 +98,22 @@ public class Trade {
 		this.multipleOfDailyOptionsVol = multipleOfDailyOptionsVol;
 	}
 	
+	public int getAvgDailyStockVol() {
+		return this.avgDailyStockVol;
+	}
+	
+	public void setAvgDailyStockVol(int avgDailyStockVol) {
+		this.avgDailyStockVol = avgDailyStockVol;
+	}
+	
+	public double getPercentOfStockVol() {
+		return this.percentOfStockVol;
+	}
+	
+	public void setPercentOfStockVol(double percentOfStockVol) {
+		this.percentOfStockVol = percentOfStockVol;
+	}
+	
 	public String toString() {
 		StringBuilder trade = new StringBuilder("Date: ").append(date)
 				.append("Symbol: ").append(symbol)
@@ -106,7 +124,9 @@ public class Trade {
 				.append(" Action: ").append(action)
 				.append(" Volume: ").append(volume)
 				.append(" AvgDailyOptionsVol: ").append(avgDailyOptionsVol)
-				.append(" MultipleOfDailyOptionsVol: ").append(multipleOfDailyOptionsVol);
+				.append(" MultipleOfDailyOptionsVol: ").append(multipleOfDailyOptionsVol)
+				.append(" AvgDailyStockVol: ").append(avgDailyStockVol)
+				.append(" PercentOfStockVol: ").append(percentOfStockVol);
 		return trade.toString();
 	}
 

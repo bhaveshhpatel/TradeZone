@@ -1,6 +1,7 @@
 package com.myapps.tradezone.listeners;
 
 import java.io.IOException;
+import java.net.URI;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,6 +26,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import twitter4j.*;
 import twitter4j.conf.*;
@@ -76,6 +79,7 @@ public class TwitterListener {
 	public void equityOptionsData(String tweet, String date) {
 		String[] tweetSplitString = tweet.split(" ");
 		int avgDailyVol = 0;
+		int avgStockVol = 0;
 		int count = 0;
 		String name = "";
 		List<EquityOptions> results = null;
@@ -108,19 +112,25 @@ public class TwitterListener {
 		trade.setStrike(tweetSplitString[1]);
 		trade.setOption(tweetSplitString[2]);
 		trade.setAction(tweetSplitString[3]);
-		trade.setVolume(tweetSplitString[10]);
+		String volume = tweetSplitString[10];
+		trade.setVolume(volume);
 		int adv = avgDailyVol / count;
 		double multiple = (double) Integer.parseInt(tweetSplitString[10].replace(",", "")) / adv;
 		multiple = Math.round(multiple * 100d) / 100d;
 		trade.setAvgDailyOptionsVol(adv);
 		trade.setMultipleOfDailyOptionsVol(multiple);
+		YEquityData yed =getYEquityData(symbol);
+		avgStockVol = Integer.parseInt(yed.getQuery().getResults().getQuote().getAverageDailyVolume().replace(",", ""));
+		trade.setAvgDailyStockVol(avgStockVol);
+		double percent = (double) Integer.parseInt(volume) * 10000 / avgStockVol;
+		percent = Math.round(percent * 100d) / 100d;
+		trade.setPercentOfStockVol(percent);
 		System.out.println("Trade info: " + trade.toString());
 		try {
 		String tradeAsJson = mapper.writeValueAsString(trade);
 		System.out.println(trade.toString());
 		jmsTemplate.convertAndSend(TRADE_QUEUE, tradeAsJson);
 		//getEquityData(symbol);
-		retrieve(symbol);
 		tradeRepository.save(trade);
     	} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -131,18 +141,20 @@ public class TwitterListener {
 		}
 	}
 	
-	public void retrieve(String requestedSymbol) {
+	public YEquityData getYEquityData(String requestedSymbol) {
 		RestTemplate rTemplate = new RestTemplate();
-	    rTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
 	    String env = "http://datatables.org/alltables.env";
-	  String symbolString = "%28%22" + requestedSymbol + "%22%29";
+	  String symbolString = "\"" + requestedSymbol + "\"";
 	  String fmt="json";
-	  String queryStr = "select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20";
-	  String restJsonUrl = "http://query.yahooapis.com/v1/public/yql?q="
-		  + queryStr + symbolString + "&format=" + fmt + "&env=" + env;
-	  restJsonUrl = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22YHOO%22)&format=json&env=http://datatables.org/alltables.env";
-	  System.out.println("URL: " + restJsonUrl);
-	  Wrapper response =rTemplate.getForObject(restJsonUrl, Wrapper.class);
+	  String queryStr = "SELECT * from yahoo.finance.quotes where symbol = ";
+	  //String restJsonUrl = "http://query.yahooapis.com/v1/public/yql?q={qid}{symbol}&format={fmt}&env={senv}";
+	  UriComponents uriComponents =
+			    UriComponentsBuilder.fromUriString("http://query.yahooapis.com/v1/public/yql?q={qid}{symbol}&format={fmt}&env={senv}").build()
+			    .expand(queryStr, symbolString, fmt, env).encode();
+	  URI uri = uriComponents.toUri();
+	  System.out.println("URL: " + uri.toString());
+	  YEquityData yed = rTemplate.getForObject(uri, YEquityData.class);
+	  return yed;
 	}
    
 	public void getEquityData(String symbol) {
