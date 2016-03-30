@@ -743,7 +743,11 @@ h1, h2, p, a, span{
 			}
 				.left-container .menu-box .equity li {
 					margin-bottom: 12px;
+					color:#ffffff;
+				}.left-container .menu-box .equity li .equityitem {
+					color:#e64c65;
 				}
+					
 					.left-container .menu-box .equity .titular {
 						border-radius: 5px;
 				background: #4fc4f6;

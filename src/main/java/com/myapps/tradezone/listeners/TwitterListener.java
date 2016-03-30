@@ -1,33 +1,21 @@
 package com.myapps.tradezone.listeners;
 
 import java.io.IOException;
-import java.net.URI;
-import java.text.DateFormat;
+
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.http.MediaType;
-import org.springframework.http.client.ClientHttpRequestFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-import org.springframework.http.converter.HttpMessageConverter;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import twitter4j.*;
 import twitter4j.conf.*;
@@ -37,6 +25,7 @@ import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapps.tradezone.models.*;
 import com.myapps.tradezone.services.*;
+import com.myapps.tradezone.workers.TradeWorker;
 
 /**
  * This is a listener class which listens to and notifies about new tweets from twitter. It used the twitter4j
@@ -51,6 +40,8 @@ public class TwitterListener {
 	private static final String TWEET_QUEUE = "tweet.queue";
 	
 	private static final String TRADE_QUEUE = "trade.queue";
+	
+	private static final String EQUITY_QUEUE = "equity.queue";
 	
 	ObjectMapper mapper = new ObjectMapper();
 	
@@ -119,18 +110,34 @@ public class TwitterListener {
 		multiple = Math.round(multiple * 100d) / 100d;
 		trade.setAvgDailyOptionsVol(adv);
 		trade.setMultipleOfDailyOptionsVol(multiple);
-		YEquityData yed =getYEquityData(symbol);
-		avgStockVol = Integer.parseInt(yed.getQuery().getResults().getQuote().getAverageDailyVolume().replace(",", ""));
+		TradeWorker tWorker = new TradeWorker();
+		YEquityData yed = tWorker.getYEquityData(symbol);
+		YEquityQuote yeq = yed.getQuery().getResults().getQuote();
+		avgStockVol = Integer.parseInt(yeq.getAverageDailyVolume().replace(",", ""));
 		trade.setAvgDailyStockVol(avgStockVol);
 		double percent = (double) Integer.parseInt(volume) * 10000 / avgStockVol;
 		percent = Math.round(percent * 100d) / 100d;
 		trade.setPercentOfStockVol(percent);
 		System.out.println("Trade info: " + trade.toString());
+		//String url = String.format("http://www.google.com/finance/option_chain?q={0}&expd={1}&expm={2}&output=json",
+        //        "FSLR","15","4");
+		System.out.println("Options Data: ");
 		try {
 		String tradeAsJson = mapper.writeValueAsString(trade);
 		System.out.println(trade.toString());
 		jmsTemplate.convertAndSend(TRADE_QUEUE, tradeAsJson);
-		//getEquityData(symbol);
+		Map<String,String> equityMap = new HashMap<String,String>();
+		equityMap.put("symbol", symbol);
+		equityMap.put("name", name);
+		equityMap.put("AverageDailyVolume", yeq.getAverageDailyVolume());
+		equityMap.put("YearLow", yeq.getYearLow());
+		equityMap.put("YearHigh", yeq.getYearHigh());
+		equityMap.put("MarketCapitalization", yeq.getMarketCapitalization());
+		equityMap.put("Open", yeq.getOpen());
+		equityMap.put("PreviousClose", yeq.getPreviousClose());
+		String equityAsJson = mapper.writeValueAsString(equityMap);
+		System.out.println(equityAsJson.toString());
+		jmsTemplate.convertAndSend(EQUITY_QUEUE, equityAsJson);
 		tradeRepository.save(trade);
     	} catch (JsonGenerationException e) {
 			e.printStackTrace();
@@ -140,34 +147,6 @@ public class TwitterListener {
 			e.printStackTrace();
 		}
 	}
-	
-	public YEquityData getYEquityData(String requestedSymbol) {
-		RestTemplate rTemplate = new RestTemplate();
-	    String env = "http://datatables.org/alltables.env";
-	  String symbolString = "\"" + requestedSymbol + "\"";
-	  String fmt="json";
-	  String queryStr = "SELECT * from yahoo.finance.quotes where symbol = ";
-	  //String restJsonUrl = "http://query.yahooapis.com/v1/public/yql?q={qid}{symbol}&format={fmt}&env={senv}";
-	  UriComponents uriComponents =
-			    UriComponentsBuilder.fromUriString("http://query.yahooapis.com/v1/public/yql?q={qid}{symbol}&format={fmt}&env={senv}").build()
-			    .expand(queryStr, symbolString, fmt, env).encode();
-	  URI uri = uriComponents.toUri();
-	  System.out.println("URL: " + uri.toString());
-	  YEquityData yed = rTemplate.getForObject(uri, YEquityData.class);
-	  return yed;
-	}
-   
-	public void getEquityData(String symbol) {
-		String url = "http://query.yahooapis.com/v1/public/yql?q=select%20"
-				+ "symbol,AverageDailyVolume%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(\""
-				+ symbol + "\")&format=json&env=http://datatables.org/alltables.env";
-				//String url = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20IN%20(%22YHOO%22)&format=json&env=http://datatables.org/alltables.env";
-		System.out.println("URL: " + url);
-		RestTemplate restTemplate = new RestTemplate();
-	    restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-	    Query query = restTemplate.getForObject(url, Query.class);
-		//System.out.println("Equities for " + equities.getSymbol() + " Avg Daily Vol: " + equities.getAverageDailyVolume());
-    }
 	
 	public void initConfiguration(){
         ConfigurationBuilder cb = new ConfigurationBuilder();

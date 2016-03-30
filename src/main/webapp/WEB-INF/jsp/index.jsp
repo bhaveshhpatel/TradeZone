@@ -102,6 +102,21 @@
 																						+ trade.percentOfStockVol
 																						+ "</td></tr>");
 															});
+											stompClient
+											.subscribe(
+													"/t/equity",
+													function(data) {
+														var equity = jQuery
+																.parseJSON(data.body);
+														//$("<div class=\"tweet first\"><p>" + message + "</p></div>").insertBefore( ".first" );
+														$('#symbol').html(equity.symbol);
+														$('#name').html(equity.name);
+														$('#avg_daily_vol').html(equity.AverageDailyVolume);
+														$('#market_cap').html(equity.MarketCapitalization);
+														$('#year_range').html(equity.YearLow + " - " + equity.YearHigh);
+														$('#open').html(equity.Open);
+														$('#previous_close').html(equity.PreviousClose);
+													});
 										});
 					});
 </script>
@@ -131,6 +146,13 @@
 				<ul class="equity">
 					<!-- SOCIAL (MIDDLE-CONTAINER) -->
 					<li><h2 class="titular">DETAILS</h2></li>
+						<li><span class="equityitem">SYMBOL : </span><span id="symbol"><c:out value="${equity.symbol}" /></span></li>
+						<li><span class="equityitem">NAME : </span><span id="name"><c:out value="${equity.name}" /></span></li>
+						<li><span class="equityitem">AVG VOL : </span><span id="avg_daily_vol"><c:out value="${equity.AverageDailyVolume}" /></span></li>
+						<li><span class="equityitem">MARKET CAP : </span><span id="market_cap"><c:out value="${equity.MarketCapitalization}" /></span></li>
+						<li><span class="equityitem">YEAR RANGE : </span><span id="year_range"><c:out value="${equity.YearLow}" /> - <c:out value="${equity.YearHigh}" /></span></li>
+						<li><span class="equityitem">OPEN : </span><span id="open"><c:out value="${equity.Open}" /></span></li>
+						<li><span class="equityitem">PREVIOUS CLOSE : </span><span id="previous_close"><c:out value="${equity.PreviousClose}" /></span></li>
 				</ul>
 			</div>
 		</div>

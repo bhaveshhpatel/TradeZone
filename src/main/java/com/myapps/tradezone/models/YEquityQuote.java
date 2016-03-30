@@ -21,6 +21,12 @@ public class YEquityQuote {
 	@JsonProperty("MarketCapitalization")
 	private String MarketCapitalization;
 
+	@JsonProperty("Open")
+	private String Open;
+
+	@JsonProperty("PreviousClose")
+	private String PreviousClose;
+
     public String getSymbol ()
     {
         return symbol;
@@ -69,6 +75,26 @@ public class YEquityQuote {
     public void setMarketCapitalization (String MarketCapitalization)
     {
         this.MarketCapitalization = MarketCapitalization;
+    }
+
+    public String getOpen ()
+    {
+        return Open;
+    }
+
+    public void setOpen (String Open)
+    {
+        this.Open = Open;
+    }
+
+    public String getPreviousClose ()
+    {
+        return PreviousClose;
+    }
+
+    public void setPreviousClose (String PreviousClose)
+    {
+        this.PreviousClose = PreviousClose;
     }
 
     @Override

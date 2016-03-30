@@ -30,4 +30,11 @@ public class Twitter {
         System.out.println("Trade is: " + tradeJson.toString());
     }
 
+    @JmsListener(destination = "equity.queue")
+    public void equity(String equityJson) {
+        // sends the message to /t/twitter
+        this.template.convertAndSend("/t/equity", equityJson.toString());
+        System.out.println("Equity is: " + equityJson.toString());
+    }
+
 }

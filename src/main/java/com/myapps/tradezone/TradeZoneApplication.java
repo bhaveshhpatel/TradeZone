@@ -2,11 +2,10 @@ package com.myapps.tradezone;
 
 import javax.jms.ConnectionFactory;
 
+
 import org.apache.activemq.ActiveMQConnectionFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.builder.SpringApplicationBuilder;
-import org.springframework.boot.context.web.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -30,7 +29,6 @@ private static final String JMS_BROKER_URL = "vm://embedded?broker.persistent=fa
     public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(TradeZoneApplication.class, args);
 		TwitterListener twitterListener = context.getBean(TwitterListener.class);
-		//TwitterListener twitterListener = new TwitterListener();
 		twitterListener.initConfiguration();
 		
 	}
