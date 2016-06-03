@@ -104,6 +104,22 @@
 															});
 											stompClient
 											.subscribe(
+													"/t/alert",
+													function(data) {
+														var alert = jQuery
+																.parseJSON(data.body);
+														$(
+														'#alerts li:eq(0)')
+														.before(
+																"<li class=\"tweet\"><p>"
+																		+ alert.volume + "&nbsp;" + alert.symbol + "&nbsp;" + alert.expiration + "&nbsp;" + alert.strike + "&nbsp;" + alert.option + "&nbsp;" + alert.action
+																		+ "</p><p><span class=\"time-ago scnd-font-color\">- "
+																		+ alert.date
+																		+ "</span>"
+																		+ "</p></li>");
+													});
+											stompClient
+											.subscribe(
 													"/t/equity",
 													function(data) {
 														var equity = jQuery
@@ -189,6 +205,20 @@
 					<span class="icon zocial-podcast"></span>&nbsp;&nbsp;&nbsp;TRADE
 					ALERTS
 				</h2>
+				<ul class="scroll mCustomScrollbar" id="alerts">
+					<c:forEach var="a" items="${alerts}">
+						<li class="tweet">
+							<p>
+								<c:out value="${a.volume}" />&nbsp;<c:out value="${a.symbol}" />&nbsp;<c:out value="${a.expiration}" />&nbsp;<c:out value="${a.strike}" />&nbsp;<c:out value="${a.option}" />&nbsp;<c:out value="${a.action}" />
+							</p>
+							<p>
+								<span class="time-ago scnd-font-color">- <c:out
+										value="${a.date}" />
+								</span>
+							</p>
+						</li>
+					</c:forEach>
+				</ul>
 				<br>
 			</div>
 		</div>

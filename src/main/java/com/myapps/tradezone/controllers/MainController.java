@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.myapps.tradezone.models.Trade;
+import com.myapps.tradezone.models.Alert;
 import com.myapps.tradezone.models.YEquityData;
 import com.myapps.tradezone.models.YEquityQuote;
 import com.myapps.tradezone.services.*;
@@ -32,6 +33,9 @@ public class MainController {
 	@Autowired
 	private TradeRepository tradeRepository;
 	
+	@Autowired
+	private AlertRepository alertRepository;
+	
 	ObjectMapper mapper = new ObjectMapper();
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
@@ -41,6 +45,8 @@ public class MainController {
 		model.addAttribute("tweets", repository.findByOrderByDateDesc());
 		List<Trade> tradeList = tradeRepository.findByOrderByDateDesc();
 		model.addAttribute("trades", tradeList);
+		List<Alert> alertList = alertRepository.findByOrderByDateDesc();
+		model.addAttribute("alerts", alertList);
 		String symbol = tradeList.get(0).getSymbol();
 		TradeWorker tWorker = new TradeWorker();
 		YEquityData yed = tWorker.getYEquityData(symbol);

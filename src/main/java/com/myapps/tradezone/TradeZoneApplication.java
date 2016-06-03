@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.mongodb.core.MongoTemplate;
 
 import com.myapps.tradezone.listeners.*;
 
@@ -19,13 +20,13 @@ import com.myapps.tradezone.listeners.*;
 @SpringBootApplication
 public class TradeZoneApplication {
 	
-private static final String JMS_BROKER_URL = "vm://embedded?broker.persistent=false,useShutdownHook=false";
-    
-@Bean
+    private static final String JMS_BROKER_URL = "vm://embedded?broker.persistent=false,useShutdownHook=false";
+
+    @Bean
     public ConnectionFactory connectionFactory() {
         return new ActiveMQConnectionFactory(JMS_BROKER_URL);
     }
-    
+
     public static void main(String[] args) {
 		ConfigurableApplicationContext context = SpringApplication.run(TradeZoneApplication.class, args);
 		TwitterListener twitterListener = context.getBean(TwitterListener.class);

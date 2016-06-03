@@ -1,7 +1,6 @@
 package com.myapps.tradezone.listeners;
 
 import java.io.IOException;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -41,6 +40,8 @@ public class TwitterListener {
 	
 	private static final String TRADE_QUEUE = "trade.queue";
 	
+	private static final String ALERT_QUEUE = "alert.queue";
+	
 	private static final String EQUITY_QUEUE = "equity.queue";
 	
 	ObjectMapper mapper = new ObjectMapper();
@@ -50,6 +51,9 @@ public class TwitterListener {
     
 	@Autowired
 	private TradeRepository tradeRepository;
+    
+	@Autowired
+	private AlertRepository alertRepository;
     
 	@Autowired
 	private JmsTemplate jmsTemplate;
@@ -119,13 +123,28 @@ public class TwitterListener {
 		percent = Math.round(percent * 100d) / 100d;
 		trade.setPercentOfStockVol(percent);
 		System.out.println("Trade info: " + trade.toString());
-		//String url = String.format("http://www.google.com/finance/option_chain?q={0}&expd={1}&expm={2}&output=json",
-        //        "FSLR","15","4");
 		System.out.println("Options Data: ");
 		try {
 		String tradeAsJson = mapper.writeValueAsString(trade);
 		System.out.println(trade.toString());
 		jmsTemplate.convertAndSend(TRADE_QUEUE, tradeAsJson);
+		if (tweet.contains("@ IS")) {
+			Alert alert = new Alert();
+			alert.setDate(date);
+			alert.setSymbol(symbol);
+			alert.setEquityName(name);
+			StringBuilder alertexp = new StringBuilder(tweetSplitString[7]).append(" ")
+					.append(tweetSplitString[8].replace(",", ""));
+			alert.setExpiration(alertexp.toString());
+			alert.setStrike(tweetSplitString[1]);
+			alert.setOption(tweetSplitString[2]);
+			alert.setAction(tweetSplitString[3]);
+			alert.setVolume(volume);
+			String alertAsJson = mapper.writeValueAsString(alert);
+			System.out.println(alert.toString());
+			jmsTemplate.convertAndSend(ALERT_QUEUE, alertAsJson);
+			alertRepository.save(alert);
+		}
 		Map<String,String> equityMap = new HashMap<String,String>();
 		equityMap.put("symbol", symbol);
 		equityMap.put("name", name);
