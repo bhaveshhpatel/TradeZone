@@ -112,11 +112,11 @@
 														'#alerts li:eq(0)')
 														.before(
 																"<li class=\"tweet\"><p>"
-																if ((alert.option.equals('Calls') && alert.action.equals('BUYING')) || (alert.option.equals('Puts') && alert.action.equals('SELLING'))) {
-																	"<img src=\"/images/bull.png\"></img>"
-																} else {
-																	"<img src=\"/images/bear.png\"></img>"
-																}
+																//if ((alert.option.equals('Calls') && alert.action.equals('BUYING')) || (alert.option.equals('Puts') && alert.action.equals('SELLING'))) {
+																//	"<img src=\"/images/bull.png\"></img>"
+																//} else {
+																//	"<img src=\"/images/bear.png\"></img>"
+																//}
 																		+ alert.volume + "&nbsp;" + alert.symbol + "&nbsp;" + alert.expiration + "&nbsp;" + alert.strike + "&nbsp;" + alert.option + "&nbsp;" + alert.action
 																		+ "</p><p><span class=\"time-ago scnd-font-color\">- "
 																		+ alert.date
@@ -214,6 +214,7 @@
 					<c:forEach var="a" items="${alerts}">
 						<li class="tweet">
 							<p>
+							<!--
 								<c:choose>
 									<c:when test="${(a.option eq 'Calls' && a.action eq 'BUYING') || (a.option eq 'Puts' && a.action eq 'SELLING')}">
 									<img src="<c:url value="/images/bull.png" />"></img>
@@ -222,6 +223,7 @@
 									<img src="<c:url value="/images/bear.png" />"></img>
 									</c:otherwise>
 								</c:choose>
+								-->
 								<c:out value="${a.volume}" />&nbsp;<c:out value="${a.symbol}" />&nbsp;<c:out value="${a.expiration}" />&nbsp;<c:out value="${a.strike}" />&nbsp;<c:out value="${a.option}" />&nbsp;<c:out value="${a.action}" />
 							</p>
 							<p>
